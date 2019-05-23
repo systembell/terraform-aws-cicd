@@ -175,6 +175,7 @@ resource "aws_codepipeline" "source_build_deploy" {
   # Elastic Beanstalk application name and environment name are specified
   count    = "${var.enabled && signum(length(var.app)) == 1 && signum(length(var.env)) == 1 ? 1 : 0}"
   name     = "${module.label.id}"
+  branch_filter = ".*"
   role_arn = "${aws_iam_role.default.arn}"
 
   artifact_store {
@@ -244,6 +245,7 @@ resource "aws_codepipeline" "source_build_deploy" {
 resource "aws_codepipeline" "source_build" {
   # Elastic Beanstalk application name or environment name are not specified
   count    = "${var.enabled && (signum(length(var.app)) == 0 || signum(length(var.env)) == 0) ? 1 : 0}"
+  branch_filter = ".*"
   name     = "${module.label.id}"
   role_arn = "${aws_iam_role.default.arn}"
 
